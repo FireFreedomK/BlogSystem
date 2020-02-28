@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'xadmin',       #安装xadmin
     'crispy_forms',
 
+    'rest_framework',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,5 +125,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+}
 

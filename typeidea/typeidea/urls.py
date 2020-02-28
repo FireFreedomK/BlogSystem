@@ -14,25 +14,24 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 import xadmin
-
-from django.contrib import admin
 from django.conf.urls import url
-
 from blog.views import (
     post_list,post_detail,PostDetailView,
     IndexView,CategoryView,TagView,SearchView,
     AuthorView,
 )
-
 from blog.rss import LatestPostFeed
 from blog.sitemap import PostSitemap
-
 from django.contrib.sitemaps import views as sitemap_views
-
 from config.views import LinkListView
-
 from comment.views import CommentView
+from blog.apis import PostViewSet
+from django.urls import include
+from rest_framework.documentation import include_docs_urls
+from rest_framework.routers import DefaultRouter
 
+router=DefaultRouter()
+router.register(r'post',PostViewSet,basename='api-post')
 
 urlpatterns = [
     url(r'^$',IndexView.as_view(),name='index'),
@@ -46,5 +45,9 @@ urlpatterns = [
     #url(r'^super_admin/', admin.site.urls,name='super-admin'),     #用于管理用户
     url(r'^admin/',xadmin.site.urls,name='xadmin'),        #用于管理业务
     url(r'^rss|feed/',LatestPostFeed(),name='rss'),     #用于RSS订阅
-    url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}})     #用于实现sitemap，输出文章列表
+    url(r'^sitemap\.xml$',sitemap_views.sitemap,{'sitemaps':{'posts':PostSitemap}}),     #用于实现sitemap，输出文章列表
+    #url(r'^api/post/',PostList.as_view(),name='post-list'),    #使用两种方式编写的api，效果相同
+    #url(r'^api/post',post_list,name='post-list'),
+    url(r'^api/docs/', include_docs_urls(title='typeidea apis')),   #django-rest-framework提供的docs工具
+    url(r'^api/post',include(router.urls)),
 ]

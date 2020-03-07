@@ -40,6 +40,12 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
+    'dal',      #自动补全功能
+    'dal_select2',
+
+    'ckeditor',     #富文本编辑器
+    'ckeditor_uploader',    #图片上传功能
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -126,6 +132,22 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 3,
 }
 
+CKEDITOR_CONFIGS = {        #富文本编辑器相关配置
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': 800,
+        'tabSpaces': 4,
+    },
+}
+
+CKEDITOR_UPLOAD_PATH = 'article_images'     #配置图片上传的路径
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+DEFAULT_FILE_STORAGE='typeidea.storage.WatermarkStorage'    #图片水印功能

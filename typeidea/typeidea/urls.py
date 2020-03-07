@@ -25,13 +25,18 @@ from blog.sitemap import PostSitemap
 from django.contrib.sitemaps import views as sitemap_views
 from config.views import LinkListView
 from comment.views import CommentView
-from blog.apis import PostViewSet
+from blog.apis import PostViewSet,CategoryViewSet
 from django.urls import include
 from rest_framework.documentation import include_docs_urls
 from rest_framework.routers import DefaultRouter
+from .autocomplete import CategoryAutocomplete,TagAutocomplete
+from django.conf import settings
+from django.conf.urls import url,include
+from django.conf.urls.static import static
 
 router=DefaultRouter()
 router.register(r'post',PostViewSet,basename='api-post')
+router.register(r'category',CategoryViewSet,basename='api-category')
 
 urlpatterns = [
     url(r'^$',IndexView.as_view(),name='index'),
@@ -50,4 +55,7 @@ urlpatterns = [
     #url(r'^api/post',post_list,name='post-list'),
     url(r'^api/docs/', include_docs_urls(title='typeidea apis')),   #django-rest-framework提供的docs工具
     url(r'^api/post',include(router.urls)),
-]
+    url(r'^category-autocomplete/$',CategoryAutocomplete.as_view(),name='category-autocomplete'),    #分类自动补全功能
+    url(r'^tag-autocomplete/$',TagAutocomplete.as_view(),name='tag-autocomplete'),      #标签自动补全
+    url(r'^ckeditor/',include('ckeditor_uploader.urls')),
+] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)      #配置图片资源访问

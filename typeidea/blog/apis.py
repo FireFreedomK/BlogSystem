@@ -15,7 +15,7 @@ class PostViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Post.objects.filter(status=Post.STATUS_NORMAL)
 
     def retrieve(self, request, *args, **kwargs):
-        self.serializer_class = PostDetailSerializer
+        self.serializer_class = PostDetailSerializer        #重新设置serializer_class的值，达到不同接口使用不同Serializer的目的
         return super().retrieve(request, *args, **kwargs)
 
     def filter_queryset(self, queryset):

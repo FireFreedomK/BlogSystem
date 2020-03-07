@@ -59,3 +59,11 @@ urlpatterns = [
     url(r'^tag-autocomplete/$',TagAutocomplete.as_view(),name='tag-autocomplete'),      #标签自动补全
     url(r'^ckeditor/',include('ckeditor_uploader.urls')),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)      #配置图片资源访问
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+        url(r'^silk/', include('silk.urls', namespace='silk')),
+    ] + urlpatterns

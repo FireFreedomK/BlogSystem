@@ -1,15 +1,13 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 from django.views.generic import DetailView,ListView
 from .models import Post,Tag,Category
 from django.shortcuts import get_object_or_404
 from django.db.models import Q, F
-from comment.forms import CommentForm
-from comment.models import Comment
 from datetime import date
 from django.core.cache import cache
-# Create your views here.
 from config.models import SideBar
+
+# Create your views here.
 
 
 class CommonViewMixin:
